@@ -1,13 +1,11 @@
-import React from 'react'
-
-const layout = ({children,team,analytics}) => {
+const layout = ({ children, team, analytics }) => {
   return (
-   <>
-   {children}
-   {team}
-   {analytics}
-   </>
-  )
-}
+    <>
+      {children}
+      {team}
+      {analytics}
+    </>
+  );
+};
 
-export default layout
+export default layout;

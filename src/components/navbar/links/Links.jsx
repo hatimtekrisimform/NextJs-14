@@ -1,11 +1,13 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import styles from "./links.module.css";
 import { usePathname } from "next/navigation";
-import NavLink from './NavLink/NavLink'
+import NavLink from "./NavLink/NavLink";
+import Image from "next/image";
 
 const Links = ({ session }) => {
+  const [open, setOpen] = useState(false);
   const pathName = usePathname();
   const links = [
     {
@@ -31,21 +33,39 @@ const Links = ({ session }) => {
   ];
   return (
     <div className={styles.container}>
-    <div className={styles.links}>
-      {links.map((link) => (
-        <NavLink item={link} key={link.title} />
-      ))}
-      {session?.user ? (
-        <>
-          {session.user?.isAdmin && <NavLink item={{ title: "Admin", path: "/admin" }} />}
-          <form action={handleLogout}>
-            <button className={styles.logout}>Logout</button>
-          </form>
-        </>
-      ) : (
-        <NavLink item={{ title: "Login", path: "/login" }} />
+      <div className={styles.links}>
+        {links.map((link) => (
+          <NavLink item={link} key={link.title} />
+        ))}
+        {session?.user ? (
+          <>
+            {session.user?.isAdmin && (
+              <NavLink item={{ title: "Admin", path: "/admin" }} />
+            )}
+            <form action={handleLogout}>
+              <button className={styles.logout}>Logout</button>
+            </form>
+          </>
+        ) : (
+          <NavLink item={{ title: "Login", path: "/login" }} />
+        )}
+      </div>
+
+      <Image
+        src="/menu.png"
+        className="menuButton"
+        alt=""
+        height={20}
+        width={20}
+        onClick={() => setOpen((pre) => !pre)}
+      ></Image>
+      {open && (
+        <div className={styles.mobileLinks}>
+          {links.map((link) => (
+            <NavLink item={link} key={link.title} />
+          ))}
+        </div>
       )}
-    </div>
     </div>
   );
 };

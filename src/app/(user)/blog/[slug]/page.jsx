@@ -7,26 +7,34 @@ export const generateMetadata = async ({ params }) => {
   const { slug } = params;
 
   const post = {
-    title:slug,
-    desc:slug
-  }
+    title: slug,
+    desc: slug,
+  };
 
   return {
     title: post.title,
     description: post.desc,
   };
 };
+const getBlogData = async (id) => {
+  //https://jsonplaceholder.typicode.com/posts
 
-const DynamicBlog = ({ params }) => {
-  const { slug } = params;
-
-  const post = {
-    img:"",
-    title:slug,
-    userId:"test id",
-    createdAt:"",
-    desc:slug
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
+  if (!res.ok) {
+    throw new Error("something went wrong");
   }
+  return res.json();
+};
+const DynamicBlog = async ({ params }) => {
+  const { slug } = params;
+  let post = await getBlogData(slug);
+  post = {
+    ...post,
+    img: "",
+    createdAt: "",
+    desc: post.body,
+  };
+
   return (
     <div className={styles.container}>
       {post.img && (

@@ -1,11 +1,20 @@
-
 import styles from "./PostUser.module.css";
 import Image from "next/image";
 
+const getUserData = async (id) => {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+  if (!res.ok) {
+    throw new Error("something went wrong");
+  }
+  return res.json();
+};
+
 const PostUser = async ({ userId }) => {
-  const user = {
+  let user = await getUserData(userId);
+
+  user = {
+    ...user,
     img: "",
-    username: userId,
   };
 
   return (

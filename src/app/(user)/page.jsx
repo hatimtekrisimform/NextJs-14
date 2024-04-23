@@ -1,8 +1,11 @@
 import Image from "next/image";
 import styles from "./home.module.css";
-import { setCookie } from "cookies-next"
+import { setCookie } from "cookies-next";
+import { createPosts, createUser } from "../../lib/seeder";
 
-export default function Home() {
+export default async function Home() {
+ // await createUser(100);
+  //await createPosts(30);
   return (
     <div className={styles.container}>
       <div className={styles.textContainer}>

@@ -1,5 +1,7 @@
 import PostCard from "../../../components/postcard/PoastCard";
 import styles from "./blog.module.css";
+import { getPosts } from "../../../lib/data";
+import { connectToDb } from "../../../lib/ConnectToDb";
 
 const getBlogsData = async () => {
   //https://jsonplaceholder.typicode.com/posts
@@ -10,45 +12,35 @@ const getBlogsData = async () => {
   }
   return res.json();
 };
+const getBlogsData2 = async () => {
+  //https://jsonplaceholder.typicode.com/posts
+
+  const res = await getPosts();
+
+  return res;
+};
+export const revalidate = 0;
 const blogs = async () => {
-  let posts = await getBlogsData();
-  posts = posts.map((data) => {
+  console.log("blog page ");
+  await connectToDb();
+  //let posts = await getBlogsData();
+  let posts = await getBlogsData2();
+ // console.log("post list - ", posts);
+  posts = posts?.map((data) => {
     return {
-      ...data,
+      ...data._doc,
       img: "/contact.png",
       createdAt: "",
       slug: "test" + data.userId,
     };
   });
-  // const posts = [
-  //   {
-  //     img: "/contact.png",
-  //     createdAt: "",
-  //     title: "Test",
-  //     body: "Body",
-  //     slug: "test",
-  //   },
-  //   {
-  //       img: "/contact.png",
-  //     createdAt: "",
-  //     title: "Test 2",
-  //     body: "Body 2",
-  //     slug: "test2",
-  //   },
-  //   {
-  //       img: "/contact.png",
-  //     createdAt: "",
-  //     title: "Test 3",
-  //     body: "Body 3",
-  //     slug: "test3",
-  //   },
-  // ];
+
   return (
     <div className={styles.container}>
-      {posts.map((post) => {
+      {posts?.map((post) => {
         return (
           <div className={styles.post}>
-            <PostCard post={post} />
+            <PostCard key={post.user} post={post} />
           </div>
         );
       })}

@@ -1,7 +1,8 @@
 import { connectToDb } from "./ConnectToDb";
 import { Post, User } from "./models";
-
+import { unstable_noStore as noStore } from "next/cache";
 export const getPosts = async () => {
+  
   try {
     await connectToDb();
 
@@ -19,6 +20,7 @@ export const getUsers = async () => {
 };
 
 export const getUser = async (id) => {
+  noStore()
   try {
     await connectToDb();
     console.log("id in user - ", id);

@@ -5,6 +5,7 @@ import styles from "./links.module.css";
 import { usePathname } from "next/navigation";
 import NavLink from "./NavLink/NavLink";
 import Image from "next/image";
+import { handleLogout } from "../../../lib/action";
 
 const Links = ({ session }) => {
   const [open, setOpen] = useState(false);

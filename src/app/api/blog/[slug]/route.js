@@ -12,3 +12,14 @@ export const GET = async (request, { params }) => {
     return NextResponse.json(post);
   } catch (e) {}
 };
+
+export const DELETE = async (request, { params }) => {
+  const { slug } = params;
+
+  try {
+    await connectToDb();
+
+    await Post.findByIdAndDelete(slug);
+    return NextResponse.json("Post Deleted");
+  } catch (e) {}
+};

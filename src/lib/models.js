@@ -46,9 +46,9 @@ const postSchema = new mongoose.Schema(
     img: {
       type: String,
     },
-    user:{
+    user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref:"User"
+      ref: "User",
     },
     slug: {
       type: String,
@@ -59,7 +59,5 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const User =
-  mongoose.models.User || mongoose.model("User", userSchema);
-export const Post =
-  mongoose.models.Post || mongoose.model("Post", postSchema);
+export const User = mongoose.models?.User || mongoose.model("User", userSchema);
+export const Post = mongoose.models?.Post || mongoose.model("Post", postSchema);

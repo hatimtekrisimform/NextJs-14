@@ -59,5 +59,28 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+const messageSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    mobile: {
+      type: String,
+    },
+    message: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
 export const User = mongoose.models?.User || mongoose.model("User", userSchema);
 export const Post = mongoose.models?.Post || mongoose.model("Post", postSchema);
+export const Message =
+  mongoose.models?.Message || mongoose.model("Message", messageSchema);

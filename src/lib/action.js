@@ -1,11 +1,11 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { connectToDb } from "./ConnectToDb";
-import { Post, User } from "./models";
+import { Message, Post, User } from "./models";
 import { redirect } from "next/navigation";
 import { signIn, signOut } from "./auth";
 
-export const addPost = async (formData) => {
+export const addPost = async (previousState, formData) => {
   const { title, desc, slug, userId } = Object.fromEntries(formData);
 
   try {
@@ -22,6 +22,7 @@ export const addPost = async (formData) => {
 
     await newPost.save();
     revalidatePath("/blog");
+    revalidatePath("/admin");
     console.log("save to db");
   } catch (e) {
     console.log({ e });
@@ -29,29 +30,32 @@ export const addPost = async (formData) => {
 
   console.log({ title, desc, slug });
 };
-export const deletePost = async (formData) => {
+export const deletePost = async (previousState, formData) => {
   try {
     const { id } = Object.fromEntries(formData);
 
     await Post.findByIdAndDelete(id);
+    revalidatePath("/blog");
+    revalidatePath("/admin");
   } catch (e) {
     console.log({ e });
   }
-  revalidatePath("/blog");
+
   redirect("/blog");
 };
 export const githubLogin = async () => {
   await signIn("github");
 };
-export const login = async (formData) => {
-  console.log("login - 1")
+export const login = async (previousState, formData) => {
+  console.log("login - 1");
   const { username, password } = Object.fromEntries(formData);
-  console.log("login - 2 - ",username,password)
+  console.log("login - 2 - ", username, password);
   try {
     await signIn("credentials", { username, password });
-    console.log("success login")
+    console.log("success login");
   } catch (e) {
-    console.log("login - 3 - ",e)
+    console.log("login - 3 - ", e);
+    throw e;
   }
 };
 export const handleLogout = async () => {
@@ -87,4 +91,47 @@ export const register = async (previousState, formData) => {
   } catch (e) {
     console.log({ e });
   }
+};
+
+export const deleteUser = async (previousState, formData) => {
+  try {
+    const { id } = Object.fromEntries(formData);
+    await Post.deleteMany({ user: id });
+    await User.findByIdAndDelete(id);
+  } catch (e) {
+    console.log({ e });
+  }
+  revalidatePath("/admin");
+};
+export const addUser = async (previousState, formData) => {
+  const { username, email, password } = Object.fromEntries(formData);
+
+  try {
+    await connectToDb();
+    const newUser = new User({
+      username,
+      email,
+      password,
+      isAdmin: false,
+    });
+
+    newUser.save();
+  } catch (e) {}
+  revalidatePath("/admin");
+};
+
+export const addMessage = async (formData) => {
+  const { name, email, mobile, message } = Object.fromEntries(formData);
+
+  try {
+    await connectToDb();
+    const newMessage = new Message({
+      name,
+      email,
+      mobile,
+      message,
+    });
+    await newMessage.save();
+    formData.reset();
+  } catch (e) {}
 };

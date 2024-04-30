@@ -40,7 +40,7 @@ const Links = ({ session }) => {
         ))}
         {session?.user ? (
           <>
-            {session.user?.isAdmin && (
+            {session?.isAdmin && (
               <NavLink item={{ title: "Admin", path: "/admin" }} />
             )}
             <form action={handleLogout}>
@@ -54,7 +54,7 @@ const Links = ({ session }) => {
 
       <Image
         src="/menu.png"
-        className="menuButton"
+        className={styles.menuButton}
         alt=""
         height={20}
         width={20}

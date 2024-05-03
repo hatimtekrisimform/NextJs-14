@@ -1,7 +1,7 @@
-const layout = ({ children, team, analytics }) => {
+const layout = ({team, analytics }) => {
   return (
     <>
-      {children}
+      
       {team}
       {analytics}
     </>

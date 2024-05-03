@@ -47,16 +47,9 @@ export const githubLogin = async () => {
   await signIn("github");
 };
 export const login = async (previousState, formData) => {
-  console.log("login - 1");
   const { username, password } = Object.fromEntries(formData);
-  console.log("login - 2 - ", username, password);
-  try {
-    await signIn("credentials", { username, password });
-    console.log("success login");
-  } catch (e) {
-    console.log("login - 3 - ", e);
-    throw e;
-  }
+
+  const user = await signIn("credentials", { username, password });
 };
 export const handleLogout = async () => {
   await signOut("github");

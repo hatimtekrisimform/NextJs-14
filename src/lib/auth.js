@@ -8,10 +8,9 @@ import { authConfig } from "./auth.config";
 const login = async ({ username, password }) => {
   try {
     await connectToDb();
-    console.log("login 1 - ", username, password);
 
     const user = await User.findOne({ username, password });
-    console.log("login 2 - ", user);
+    console.log("user in login - ", user);
     if (!user) {
       throw new Error("user not found");
     }
@@ -36,10 +35,17 @@ export const {
     CredentialProvider({
       async authorize({ username, password }) {
         try {
-          console.log("authorize - ", username, password);
-          const user = await login({ username, password });
-          return user;
+          let user = await login({ username, password });
+
+          const newuser = {
+            test: "testing",
+            username: user.username,
+            isAdmin: user.isAdmin,
+            email: user.email,
+          };
+          return newuser;
         } catch (e) {
+          console.log("error in authorize  - ", e);
           return null;
         }
       },
@@ -61,7 +67,6 @@ export const {
               password: "password",
             });
             await newUser.save();
-            console.log("user created");
           }
         } catch (e) {
           return false;

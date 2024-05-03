@@ -2,7 +2,7 @@ import React from 'react'
 
 function page() {
   return (
-    <div>team slot</div>
+    <div>Dashbaord Page</div>
   )
 }
 

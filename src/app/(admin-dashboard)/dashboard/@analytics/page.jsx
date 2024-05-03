@@ -1,15 +1,7 @@
-import Link from "next/link";
+import React from "react";
 
-const analytics = () => {
-  return (
-    <div>
-      <nav>
-        <Link href="/dashboard/tab1">TAB 1</Link>
-        <Link href="/dashboard/tab2">TAB 2</Link>
-      </nav>
-      analytics
-    </div>
-  );
-};
+function page() {
+  return <div>analytics slot </div>;
+}
 
-export default analytics;
+export default page;
